@@ -11,7 +11,16 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-        // put your code here
+        $recurso = mysqli_connect("localhost:3306", "root", "", "mr_javiondo_gamer");
+        if (mysqli_connect_error()) {
+            printf("Error conectando a la base de datos: %s\n", mysqli_connect_error());
+            exit();
+        }
+        else{
+            echo "EUREKAAAA";
+           
+        }
+        
         ?>
     </body>
 </html>
