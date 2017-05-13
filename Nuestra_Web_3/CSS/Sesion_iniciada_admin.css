@@ -104,10 +104,11 @@ body{
 }
 
 #boton {
-    margin: 5px;
-    padding: 5px;
+    margin: 20px;
+    padding: 20px;
     font-weight: bold;
-    background-color: white;
+    font-size: large;
+    background-color: #F9F999;
 }
 
 table{

@@ -19,14 +19,16 @@
             exit();
         } else {
 
-            $resultado = mysqli_query($recurso, "SELECT COUNT(id_usuario) FROM usuarios WHERE usuario = '" . $user . "' AND contrasenya = '" . $passwd . "';");
+            $resultado = mysqli_query($recurso, "SELECT COUNT(id_administrador) FROM administradores WHERE admin = '" . $user . "' AND password = '" . $passwd . "';");
 
             while ($fila = mysqli_fetch_row($resultado)){
                 $total = $fila[0];
             }
 
             if ($total == 1) {
-                header('Location: index.php');
+                session_start();
+                $_SESSION['admin'] = $user;
+                header('Location: Sesion_iniciada_admin.php');
             } else {
                 header('Location: Inicio_administrador.php');
             }
