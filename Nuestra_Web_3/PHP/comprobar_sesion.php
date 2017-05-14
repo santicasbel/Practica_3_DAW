@@ -5,13 +5,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+session_start();
 
-if(session_status() == 1){
+if($_SESSION['admin'] == NULL){
     header('Location: Inicio_administrador.php');
 }
 
 else {
-    header('Location: index.php');
+    header('Location: Sesion_iniciada_admin.php');
 }
 
 ?>
