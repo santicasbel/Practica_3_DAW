@@ -23,7 +23,7 @@
 
             else if(filter_input(INPUT_POST, 'opcion') == 3){
                 $producto = filter_input(INPUT_POST, 'eleccion');
-                $resultado = mysqli_query($recurso, "SELECT id_pedido,nombre_usuario,nombre_producto,precio,cantidad, envio, fecha FROM pedidos WHERE envio = 1 AND nombre_producto = '" .$producto. "';");
+                $resultado = mysqli_query($recurso, "SELECT id_pedido,nombre_usuario,nombre_producto,precio,cantidad, envio, fecha FROM pedidos WHERE envio = 1 AND nombre_producto like '%" .$producto. "%';");
             }
 
             else{

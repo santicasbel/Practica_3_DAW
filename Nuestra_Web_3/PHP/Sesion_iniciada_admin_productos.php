@@ -18,7 +18,7 @@
         }
         else{
             $nombre_producto = filter_input(INPUT_POST, 'eleccion');
-            $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock FROM productos WHERE nombre_producto = '" .$nombre_producto. "';");
+            $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock FROM productos WHERE nombre_producto like '%" .$nombre_producto. "%';");
         }
         
     }
