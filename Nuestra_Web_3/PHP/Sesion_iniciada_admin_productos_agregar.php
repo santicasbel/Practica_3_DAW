@@ -26,7 +26,7 @@ if(filter_input(INPUT_POST, 'nombre_producto') != NULL){
         }
         
         else{
-            mysqli_query($recurso, "INSERT INTO productos (descripcion, precio, nombre_producto, stock, alta) VALUES ('" .$descripcion. "', '" .$precio. "', '" .$nombre_producto. "', '" .$stock. "', '0')");
+            mysqli_query($recurso, "INSERT INTO productos (descripcion, precio, nombre_producto, stock, alta) VALUES ('" .$descripcion. "', '" .$precio. "', '" .$nombre_producto. "', '" .$stock. "', '1')");
             $error = "El producto se ha agregado con exito";
         }
     }
@@ -62,7 +62,7 @@ if(filter_input(INPUT_POST, 'nombre_producto') != NULL){
                                 <td> Descripcion </td> <td> <textarea name="descripcion" id="descripcion" rows="8" cols="35" required> </textarea> </td>
                             </tr>
                             <tr>
-                                <td> Precio: </td> <td> <input type="text" name="precio" id="precio" required /> </td>
+                                <td> Precio (€): </td> <td> <input type="text" name="precio" id="precio" required /> <a> <b> Formato: nn.nn </b> </a> </td>
                             </tr>
                             <tr>
                                 <td> Stock: </td> <td> <input type="number" name="stock" id="stock" min="1" max="9999" required /> </td>

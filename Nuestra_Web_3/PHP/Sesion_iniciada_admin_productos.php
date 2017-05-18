@@ -30,6 +30,7 @@
         $descripcion = filter_input(INPUT_POST, 'descripcion');
         $stock = filter_input(INPUT_POST, 'stock');
         $eliminar = filter_input(INPUT_POST, 'eliminar');
+        $alta = filter_input(INPUT_POST, 'alta');
         
         $nombre_producto_ori = filter_input(INPUT_POST, 'nombre_producto_ori');
         
@@ -44,15 +45,27 @@
             
             if($eliminar == "si"){
                 mysqli_query($recurso, "DELETE FROM productos WHERE id_producto = '" .$id_producto. "';");
-                $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock FROM productos;");
+                $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock,alta FROM productos;");
                 $error = "Se ha eliminado el producto correctamente";
+            }
+            
+            else if($alta == "1"){
+                mysqli_query($recurso, "UPDATE productos SET alta = '1' WHERE id_producto = '" .$id_producto. "';");
+                $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock,alta FROM productos;");
+                $error = "Se ha dado de baja el producto";
+            }
+            
+            else if($alta == "0"){
+                mysqli_query($recurso, "UPDATE productos SET alta = '0' WHERE id_producto = '" .$id_producto. "';");
+                $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock,alta FROM productos;");
+                $error = "Se ha dado de alta el producto";
             }
             
             else{
               
                 if($nombre_producto == $nombre_producto_ori){
                     mysqli_query($recurso, "UPDATE productos SET precio = '" .$precio. "', descripcion = '" .$descripcion. "', stock = '" .$stock. "'  WHERE nombre_producto = '" .$nombre_producto_ori. "';");
-                    $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock FROM productos;");
+                    $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock,alta FROM productos;");
                     $error = "Se han realizado los cambios correctamente, menos el nombre que es el mismo";
                 }
 
@@ -65,14 +78,14 @@
 
                     if($total == 1){
                         mysqli_query($recurso, "UPDATE productos SET precio = '" .$precio. "', descripcion = '" .$descripcion. "', stock = '" .$stock. "'  WHERE nombre_producto = '" .$nombre_producto_ori. "';");
-                        $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock FROM productos;");
+                        $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock,alta FROM productos;");
                         $error = "Se han realizado los cambios correctamente, menos el nombre porque ya esta en uso";
                     }
 
                     else{
                         mysqli_query($recurso, "UPDATE productos SET nombre_producto = '" .$nombre_producto. "', precio = '" .$precio. "', descripcion = '" .$descripcion. "', stock = '" .$stock. "'  WHERE nombre_producto = '" .$nombre_producto_ori. "';");
                         mysqli_query($recurso, "UPDATE pedidos SET nombre_producto = '" .$nombre_producto. "' WHERE nombre_producto = '" .$nombre_producto_ori. "';");
-                        $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock FROM productos;");
+                        $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock,alta FROM productos;");
                         $error = "Se han realizado los cambios correctamente";
                     }
                 }
@@ -90,7 +103,7 @@
             exit();
         }
         else{
-            $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock FROM productos;");
+            $resultado = mysqli_query($recurso, "SELECT id_producto,nombre_producto,precio,descripcion,stock,alta FROM productos;");
         }
     }
     ?>
@@ -118,7 +131,7 @@
             
             <table border="1" id="usuarios">
                 <tr>
-                    <td> <b> Portada </b> </td> <td> <b> Nombre </b> </td> <td> <b> Precio (€) </b> </td> <td> <b> Descripción </b> </td> <td> <b> Stock </b> </td> <td> <b> Eliminar (si o no) </b> </td>
+                    <td> <b> Portada </b> </td> <td> <b> Nombre </b> </td> <td> <b> Precio (€) </b> </td> <td> <b> Descripción </b> </td> <td> <b> Stock </b> </td>
                 </tr>
 
                 <?php
@@ -129,6 +142,7 @@
                     $precio = $fila[2];
                     $descripcion = $fila[3];
                     $stock = $fila[4];
+                    $alta = $fila[5];
                     
                 ?>
                 
@@ -139,17 +153,48 @@
                         <td> <input type="text" name="precio" id="precio" value="<?php echo $precio ?>" required> </td>
                         <td> <textarea rows="12" cols="25" name="descripcion" id="descripcion" required> <?php echo $descripcion ?> </textarea> </td>
                         <td> <input type="text" name="stock" id="stock" value="<?php echo $stock ?>" required> </td>
-                        <td> <input type="text" name="eliminar" id="eliminar"> </td>
 
                         <input type="hidden" name="nombre_producto_ori" id="nombre_producto_ori" value="<?php echo $nombre_producto ?>">
                         <input type="hidden" name="id_producto" id="id_producto" value="<?php echo $id_producto ?>">
 
                         <td> <input type="submit" value="Modificar"/> </td>
-
-                    </tr>
                 </form>
+                
+                        <form method="post" action="Sesion_iniciada_admin_productos.php">
+                            <input type="hidden" name="id_producto" id="id_producto" value="<?php echo $id_producto ?>">
+                            <input type="hidden" name="eliminar" id="eliminar" value="si" >
+                            <td> <input type="submit" value="Borrar"/> </td>
+                        </form>
+                
+                <?php
+                if($alta == '0'){
+                ?>
+                
+                         <form method="post" action="Sesion_iniciada_admin_productos.php">
+                            <input type="hidden" name="id_producto" id="id_producto" value="<?php echo $id_producto ?>">
+                            <input type="hidden" name="alta" id="alta" value="1" >
+                            <td> <input type="submit" value="Dar de baja"/> </td>
+                        </form>
+                
+                    </tr>
+                
+                <?php
+                    }
+                        
+                    else{
+                        
+                ?>
+                
+                        <form method="post" action="Sesion_iniciada_admin_productos.php">
+                            <input type="hidden" name="id_producto" id="id_producto" value="<?php echo $id_producto ?>">
+                            <input type="hidden" name="alta" id="alta" value="0" >
+                            <td> <input type="submit" value="Dar de alta"/> </td>
+                        </form>
+                
+                    </tr>
 
                 <?php
+                    }
                 }
                 ?>
 

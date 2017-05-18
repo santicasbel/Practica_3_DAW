@@ -80,6 +80,7 @@ div.menu{
 
 body{
     font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffcaf6;
     
     margin: 0 0 52px ;     /*Para que el pie de página este fijo siempre al final*/
 }
